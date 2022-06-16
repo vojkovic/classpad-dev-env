@@ -17,6 +17,11 @@ jobs:
         
     - name: Check Out Repo 
       uses: actions/checkout@v2
+    
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@master
+      with:
+        platforms: all
         
     - name: Set up Docker Buildx
       id: buildx
@@ -29,6 +34,7 @@ jobs:
         context: ./
         file: ./.devcontainer/Dockerfile
         push: true
+        platforms: linux/amd64,linux/arm64
         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/classpad-dev-env:latest
 
     - name: Image digest
