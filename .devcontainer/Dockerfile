@@ -1,6 +1,7 @@
 
 ARG VARIANT="bullseye"
 FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
+SHELL ["/bin/bash", "-c"]
 
 # download dependencies from apt and some text editors
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
@@ -31,8 +32,10 @@ RUN cd gcc-11.1.0 \
   && sudo make install-gcc \
   && sudo make install-target-libgcc
 
-# clone hollyhock sdk and add environment variables to .bashrc
+# clone hollyhock sdk and add environment variables to .bashrc and make sdk files.
 RUN cd $HOME \
   && git clone https://github.com/SnailMath/hollyhock-2.git \
   && echo 'export PATH="$PATH:$HOME/opt/cross/bin"' >> .bashrc \
-  && echo 'export SDK_DIR="$HOME/hollyhock-2/sdk"' >> .bashrc
+  && echo 'export SDK_DIR="$HOME/hollyhock-2/sdk"' >> .bashrc \
+  && source .bashrc \
+  && make -C $HOME/hollyhock-2/sdk

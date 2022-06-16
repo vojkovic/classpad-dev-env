@@ -1,1 +1,0 @@
-cd /root/hollyhock-2/sdk && make
